@@ -26,7 +26,7 @@ int main() {
     while (fgets(buf, sizeof(buf), ls) != NULL)
         fputs(buf, wc);
 // once
-    printf("--stuff has just been witten to wc!\n");
+   // printf("--stuff has just been witten to wc!\n");
 
 
 
@@ -36,10 +36,11 @@ if (wc == NULL){
     return 1;
 }
 
+// sleep(5);
 
     mypclose(ls);
     mypclose(wc);
-   // sleep(5);
+
 
 
     return 0;

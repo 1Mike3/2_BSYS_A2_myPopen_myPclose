@@ -5,4 +5,16 @@
 #ifndef MYPOPEN_MYPCLOSE_DEFINITIONS_H
 #define MYPOPEN_MYPCLOSE_DEFINITIONS_H
 
+#define FD_READ 0
+#define FD_WRITE 1
+
+#define READ "r"
+#define WRITE "w"
+
+#define CHILD == 0
+#define PARENT > 0
+
+
+
+
 #endif //MYPOPEN_MYPCLOSE_DEFINITIONS_H
