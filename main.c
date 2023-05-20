@@ -17,7 +17,7 @@ int main() {
 
 
   //  printPipe(stream1);
- //   printf("TEST\n");
+
 
     FILE * stream2 = mypopen("wc", "w");
 
