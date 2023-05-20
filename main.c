@@ -46,7 +46,8 @@ if (wc == NULL){
 }
 
 
-
+    mypclose(ls);
+    mypclose(wc);
    // sleep(5);
 
 
