@@ -98,10 +98,10 @@ FILE *mypopen(const char *command, const char *type) {
             printf("EE3 fd0 is %i\n\n",fd[0]);
             printf("EE3 stdin is %i\n\n",STDIN_FILENO);
 
-            sleep(2);
+
 
             scanf("%s",buffer2);
-            printf("EE buffer: %s\n\n",buffer2);
+            printf("!!!!! buffer: %s\n\n",buffer2);
 
 
 
