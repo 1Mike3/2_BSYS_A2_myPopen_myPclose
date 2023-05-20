@@ -20,21 +20,12 @@ int main() {
 
 
 
-    char buffer[11];
-  //  fgets(buffer,11,ls);
-  buffer[0] = 'H';
-    buffer[1] = 'e';
-    buffer[2] = 'l';
-    buffer[3] = 'l';
-    buffer[4] = 'o';
-    buffer[5] = ' ';
-    buffer[6] = 'W';
-    buffer[7] = 'o';
-    buffer[8] = 'r';
-    buffer[9] = 'l';
-    buffer[10] = '\0';
-    buffer[9] = '\n';
-    fputs(buffer,wc);
+
+// we consume the output of `ls` and feed it to `wc`
+    char buf[1024];
+    while (fgets(buf, sizeof(buf), ls) != NULL)
+        fputs(buf, wc);
+// once
     printf("--stuff has just been witten to wc!\n");
 
 

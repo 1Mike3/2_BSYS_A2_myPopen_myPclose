@@ -84,7 +84,7 @@ FILE *mypopen(const char *command, const char *type) {
 #pragma endregion debug
         if(type[0] == 'w'){
 
-            char buffer2[100];
+            char buffer2[1024];
 
             close(fd[1]);
 
@@ -99,9 +99,13 @@ FILE *mypopen(const char *command, const char *type) {
             printf("EE3 stdin is %i\n\n",STDIN_FILENO);
 
 
+            execl("/bin/sh", "sh", "-c", command, NULL);
 
-            scanf("%s",buffer2);
-            printf("!!!!! buffer: %s\n\n",buffer2);
+            for (int i = 0; i < 5; ++i) {
+                scanf("%s",buffer2);
+                printf("!!!!! buffer: %s\n\n",buffer2);
+            }
+
 
 
 
@@ -136,8 +140,9 @@ FILE *mypopen(const char *command, const char *type) {
             close(fd[1]);
 
             //write 10 chars into the pipe
-            write(STDOUT_FILENO, "1234567890", 10);
-//execlp("bin/sh", "-c",command, NULL);
+          //  write(STDOUT_FILENO, "1234567890", 10);
+        //  execlp("bin/sh", "-c",command, NULL);
+            execl("/bin/sh", "sh", "-c", command, NULL);
 exit(EXIT_FAILURE);
         }
 
