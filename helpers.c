@@ -4,6 +4,8 @@
 
 #include "helpers.h"
 
+//ignore, just used this one for debugging
+
 void printPipe(FILE * file){
 
     char lineBuffer[300];

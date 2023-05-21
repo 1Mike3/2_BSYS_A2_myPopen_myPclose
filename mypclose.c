@@ -3,12 +3,11 @@
 //
 
 #include "mypclose.h"
-#include "unistd.h"
-#include "sys/wait.h"
+
 
 #define DEBUG_MYPCLOSE 0
 
-short mypclose(FILE * file){
+pid_t mypclose(FILE * file){
 
     static int i = 0;
 
@@ -37,13 +36,14 @@ short mypclose(FILE * file){
     //i++;
 
     //waiting for the specific process to finish
-    waitpid(fd,NULL,0); //wait for child to finish
+  pid_t retPid = waitpid(fd,NULL,0); //wait for child to finish
+    return retPid;
 #pragma region debug
 #if DEBUG_MYPCLOSE
     printf("CLOSE: child finished [%i]\n", i);
 #endif
 #pragma endregion debug
 
-    //return 0 if alls well :)
-    return 0;
+    //return 0 if you got until here
+    return -1;
 }

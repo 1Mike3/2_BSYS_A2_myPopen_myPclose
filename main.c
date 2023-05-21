@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "mypopen.h"
 #include "mypclose.h"
-#include "helpers.h"
+#include <unistd.h>
 #include "definitions.h"
 
 int main() {
@@ -33,15 +33,20 @@ int main() {
 
 //closing the filestreams and error handling
 #pragma region mypclose
-
-    if(0 > mypclose(stream1)){
+pid_t ret1 = mypclose(stream1);
+    if(0 > ret1){
         printf("ERROR MYPCLOSE 1!\n");
         return 1;
+    }else {
+        printf("SUCCESS MYPCLOSE 1, return value: %i\n", ret1);
     }
 
-    if(0 > mypclose(stream2)){
+pid_t ret2 = mypclose(stream2);
+    if(0 > ret2){
         printf("ERROR MYPCLOSE 2!\n");
         return 1;
+    } else {
+        printf("SUCCESS MYPCLOSE 2, return value: %i\n", ret2);
     }
 #pragma endregion mypclose
 
