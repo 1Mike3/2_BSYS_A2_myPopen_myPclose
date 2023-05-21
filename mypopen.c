@@ -10,12 +10,10 @@
 #define DEBUG_MYPOPEN 0
 
 FILE *mypopen(const char *command, const char *type) {
-
+//file descriptor aka pipe
     int fd[2];
+//process id aka return value of fork
     int pid;
-
-
-
 #pragma region debug
 #if DEBUG_MYPOPEN
     static int callcounter = 0;
@@ -23,15 +21,13 @@ FILE *mypopen(const char *command, const char *type) {
 #pragma endregion debug
 
 
-
-
+/// CREATE THE PIPE AND CHECK FOR ERRORS
     if( pipe(fd) == -1){
 #pragma region debug
 #if DEBUG_MYPOPEN
         callcounter++;
 #endif
 #pragma endregion debug
-
         printf("ERROR pipe \n");
         return NULL;
     }
@@ -42,25 +38,22 @@ FILE *mypopen(const char *command, const char *type) {
     printf("PP pipe created write end: %i\n", fd[1]);
 #endif
 #pragma endregion debug
-
-
+/// CREATE THE CHILD PROCESS
     pid = fork();
-
-
-
+//Error handling if pid fails
     if (pid == -1) {
-        printf("ERROR fork \n");
-
+        printf("ERROR fork\n");
 #pragma region debug
 #if DEBUG_MYPOPEN
         callcounter++;
 #endif
 #pragma endregion debug
-
         return NULL;
     }
 
-//PARENT
+
+
+#pragma region parent process
     if (pid PARENT) {
 #pragma region debug
 #if DEBUG_MYPOPEN
@@ -70,32 +63,27 @@ FILE *mypopen(const char *command, const char *type) {
 
 #endif
 #pragma endregion debug
-
+//if the function is called with w mode
         if (type[0] == 'w') {
             close(fd[FD_READ]);
-
 #pragma region debug
 #if DEBUG_MYPOPEN
             callcounter++;
 #endif
 #pragma endregion debug
-
             FILE *opened = fdopen(fd[FD_WRITE], WRITE);
-
 #pragma region debug
 #if DEBUG_MYPOPEN
             printf("´´´w returned the pointer\n");
             perror("fdopen w:");
 #endif
 #pragma endregion debug
-
             return opened;
         }
 
-
+//if the function is called with r mode
     if (type[0] == 'r') {
        close(fd[FD_WRITE]);
-
 #pragma region debug
 #if DEBUG_MYPOPEN
         callcounter++;
@@ -110,11 +98,12 @@ FILE *mypopen(const char *command, const char *type) {
 #pragma endregion debug
         return opened;
     }
-} // if pid > 0
+}
+#pragma endregion parent process
 
 
 
-
+#pragma region child process
     //CHILD
     if (pid CHILD) {
 #pragma region debug
@@ -126,10 +115,9 @@ FILE *mypopen(const char *command, const char *type) {
 
 #endif
 #pragma endregion debug
+        //if the function is called with w mode
         if(type[FD_READ] == 'w'){
-
-            char buffer2[1024];
-
+        //    char buffer2[1024]; buffer for debugging
             close(fd[FD_WRITE]);
 #pragma region debug
 #if DEBUG_MYPOPEN
@@ -137,9 +125,7 @@ FILE *mypopen(const char *command, const char *type) {
             printf("EE1 stdin is %i\n\n",STDIN_FILENO);
 #endif
 #pragma endregion debug
-
             dup2(fd[FD_READ],STDIN_FILENO);
-
 #pragma region debug
 #if DEBUG_MYPOPEN
             perror("dup2 w:");
@@ -147,7 +133,6 @@ FILE *mypopen(const char *command, const char *type) {
             printf("EE2 stdin is %i\n\n",STDIN_FILENO);
 #endif
 #pragma endregion debug
-
             close(fd[FD_READ]);
 #pragma region debug
 #if DEBUG_MYPOPEN
@@ -155,54 +140,36 @@ FILE *mypopen(const char *command, const char *type) {
             printf("EE3 stdin is %i\n\n",STDIN_FILENO);
 #endif
 #pragma endregion debug
-
-
-
+//substitute the child process with the shell and execute the command
             execl("/bin/sh", "sh", "-c", command, NULL);
-
-            //old for loop to read out debug information
-            /*
-            for (int i = 0; i < 5; ++i) {
-                scanf("%s",buffer2);
-                printf("!!!!! buffer: %s\n\n",buffer2);
-            }
-*/
-
-
 #pragma region debug
 #if DEBUG_MYPOPEN
             printf("\nEE i am now echo\n");
             printf("EE my stdin is %i\n\n",STDIN_FILENO);
 #endif
 #pragma endregion debug
-
-
-
-
-            exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);//if the execl fails
     } // end w part child process
 
-
+//if the function is called with r mode
         if(type[0] == 'r'){
+            //preform the necessary steps to read from the pipe
             close(fd[FD_READ]);
             dup2(fd[FD_WRITE],STDOUT_FILENO);
             close(fd[FD_WRITE]);
-
-            //write 10 chars into the pipe
-          //  write(STDOUT_FILENO, "1234567890", 10);
-        //  execlp("bin/sh", "-c",command, NULL);
+            //substitute the child process with the shell and execute the command
             execl("/bin/sh", "sh", "-c", command, NULL);
-exit(EXIT_FAILURE);
+exit(EXIT_FAILURE); //if the execl fails
         }
 
 
 }
-
+#pragma endregion child process
 #pragma region debug
 #if DEBUG_MYPOPEN
     callcounter++;
 #endif
 #pragma endregion debug
-
+    //if something went wrong NULL is returned
     return NULL;
 }

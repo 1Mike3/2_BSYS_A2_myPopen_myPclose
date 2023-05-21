@@ -5,6 +5,8 @@
 #ifndef MYPOPEN_MYPCLOSE_DEFINITIONS_H
 #define MYPOPEN_MYPCLOSE_DEFINITIONS_H
 
+//don't mind me, i am just a helpful file containing some definitions
+
 #define FD_READ 0
 #define FD_WRITE 1
 

@@ -7,6 +7,10 @@
 
 #include "stdio.h"
 
+/**
+ * @brief prints the content of a file stream to stdout
+ * @param file file pointer to the file stream to be printed
+ */
 void printPipe(FILE * file);
 
 #endif //MYPOPEN_MYPCLOSE_HELPERS_H
