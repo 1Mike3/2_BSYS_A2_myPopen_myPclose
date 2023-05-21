@@ -16,7 +16,4 @@
 #define CHILD == 0
 #define PARENT > 0
 
-
-
-
 #endif //MYPOPEN_MYPCLOSE_DEFINITIONS_H
